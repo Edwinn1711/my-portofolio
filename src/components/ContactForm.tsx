@@ -1,166 +1,390 @@
+
 "use client";
-import { ChevronRight, Loader2 } from "lucide-react";
-import React from "react";
-import { Label } from "./ui/label";
-import { Input } from "./ui/ace-input";
-import { Textarea } from "./ui/ace-textarea";
-import { cn } from "@/lib/utils";
-import { useToast } from "./ui/use-toast";
-import { Button } from "./ui/button";
-import { useRouter } from "next/navigation";
-import { z } from "zod";
 
-const formSchema = z.object({
-  fullName: z.string().min(2, "Full name must be at least 2 characters"),
-  email: z.string().email("Please enter a valid email address"),
-  message: z.string().min(10, "Message must be at least 10 characters"),
-});
+import React, { useState } from "react";
+import type { FormEvent } from "react";
 
-type FieldErrors = Partial<Record<keyof z.infer<typeof formSchema>, string>>;
+import {
+  ArrowRight,
+  CheckCircle2,
+  AlertCircle,
+  Loader2,
+} from "lucide-react";
 
-const ContactForm = () => {
-  const [fullName, setFullName] = React.useState("");
-  const [email, setEmail] = React.useState("");
-  const [message, setMessage] = React.useState("");
-  const [loading, setLoading] = React.useState(false);
-  const [errors, setErrors] = React.useState<FieldErrors>({});
+// =======================================
+// FORM TYPES
+// =======================================
 
-  const { toast } = useToast();
-  const router = useRouter();
+type ContactFormData = {
+  fullName: string;
+  email: string;
+  message: string;
+  website: string;
+};
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setErrors({});
+type FormStatus =
+  | "idle"
+  | "loading"
+  | "success"
+  | "error";
 
-    const result = formSchema.safeParse({ fullName, email, message });
-    if (!result.success) {
-      const fieldErrors: FieldErrors = {};
-      result.error.issues.forEach((issue) => {
-        const field = issue.path[0] as keyof FieldErrors;
-        if (!fieldErrors[field]) fieldErrors[field] = issue.message;
-      });
-      setErrors(fieldErrors);
-      return;
+type ApiResponse = {
+  success?: boolean;
+  message?: string;
+  error?: string;
+  id?: string;
+};
+
+const initialForm: ContactFormData = {
+  fullName: "",
+  email: "",
+  message: "",
+  website: "",
+};
+
+// =======================================
+// CONTACT FORM
+// =======================================
+
+export default function ContactForm() {
+  const [form, setForm] =
+    useState<ContactFormData>(initialForm);
+
+  const [status, setStatus] =
+    useState<FormStatus>("idle");
+
+  const [feedback, setFeedback] = useState("");
+
+  // =====================================
+  // UPDATE INPUT
+  // =====================================
+
+  const updateField = (
+    field: keyof ContactFormData,
+    value: string
+  ) => {
+    setForm((previous) => ({
+      ...previous,
+      [field]: value,
+    }));
+
+    if (
+      status === "error" ||
+      status === "success"
+    ) {
+      setStatus("idle");
+      setFeedback("");
     }
-
-    setLoading(true);
-    try {
-      const res = await fetch("/api/send", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ fullName, email, message }),
-      });
-      if (!res.ok) {
-        const data = await res.json();
-        throw new Error(data.error || `Request failed (${res.status})`);
-      }
-      toast({
-        title: "Thank you!",
-        description: "I'll get back to you as soon as possible.",
-        variant: "default",
-        className: cn("top-0 mx-auto flex fixed md:top-4 md:right-4"),
-      });
-      setLoading(false);
-      setFullName("");
-      setEmail("");
-      setMessage("");
-      const timer = setTimeout(() => {
-        router.push("/");
-        clearTimeout(timer);
-      }, 1000);
-    } catch (err) {
-      toast({
-        title: "Error",
-        description: "Something went wrong! Please try again.",
-        className: cn(
-          "top-0 w-full flex justify-center fixed md:max-w-7xl md:top-4 md:right-4"
-        ),
-        variant: "destructive",
-      });
-    }
-    setLoading(false);
   };
+
+  // =====================================
+  // SUBMIT FORM TO RESEND API
+  // =====================================
+
+  const handleSubmit = async (
+    event: FormEvent<HTMLFormElement>
+  ) => {
+    event.preventDefault();
+
+    if (status === "loading") return;
+
+    setStatus("loading");
+    setFeedback("");
+
+    try {
+      const response = await fetch("/api/send", {
+        method: "POST",
+
+        headers: {
+          "Content-Type": "application/json",
+        },
+
+        body: JSON.stringify({
+          fullName: form.fullName.trim(),
+          email: form.email.trim(),
+          message: form.message.trim(),
+          website: form.website,
+        }),
+      });
+
+      let result: ApiResponse = {};
+
+      try {
+        result = (await response.json()) as ApiResponse;
+      } catch {
+        // Handle non-JSON API responses.
+      }
+
+      // Check response status
+      if (!response.ok || result.success === false) {
+        throw new Error(
+          result.error ||
+            result.message ||
+            "Unable to send your message. Please try again."
+        );
+      }
+
+      // ===================================
+      // SUCCESS
+      // ===================================
+
+      setStatus("success");
+
+      setFeedback(
+        "Your message has been submitted successfully! Thank you for reaching out."
+      );
+
+      // Clear fields after successful submission
+      setForm(initialForm);
+    } catch (error) {
+      // ===================================
+      // ERROR
+      // ===================================
+
+      setStatus("error");
+
+      setFeedback(
+        error instanceof Error
+          ? error.message
+          : "Something went wrong. Please try again."
+      );
+    }
+  };
+
+  // =====================================
+  // INPUT STYLES
+  // =====================================
+
+  const inputClassName = `
+    w-full rounded-lg
+    border border-border/60
+    bg-zinc-100 px-4 py-3
+    text-sm text-foreground
+    outline-none
+    transition-all duration-200
+    placeholder:text-muted-foreground/70
+    focus:border-primary/60
+    focus:ring-2 focus:ring-primary/15
+    dark:bg-zinc-800/90
+    disabled:cursor-not-allowed
+    disabled:opacity-60
+  `;
+
   return (
-    <form className="min-w-7xl mx-auto sm:mt-4" onSubmit={handleSubmit} aria-busy={loading}>
-      <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mb-4">
-        <LabelInputContainer>
-          <Label htmlFor="fullname">Full name</Label>
-          <Input
-            id="fullname"
-            placeholder="Your Name"
+    <form
+      onSubmit={handleSubmit}
+      className="space-y-5"
+    >
+      {/* ================================= */}
+      {/* FULL NAME AND EMAIL               */}
+      {/* ================================= */}
+
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+        {/* FULL NAME */}
+        <div className="space-y-2">
+          <label
+            htmlFor="contact-name"
+            className="text-sm font-semibold"
+          >
+            Full name
+          </label>
+
+          <input
+            id="contact-name"
             type="text"
-            value={fullName}
-            onChange={(e) => { setFullName(e.target.value); setErrors((p) => ({ ...p, fullName: undefined })); }}
+            name="fullName"
+            autoComplete="name"
+            placeholder="Your Name"
+            value={form.fullName}
+            onChange={(event) =>
+              updateField(
+                "fullName",
+                event.target.value
+              )
+            }
+            minLength={2}
+            maxLength={100}
+            required
+            disabled={status === "loading"}
+            className={inputClassName}
           />
-          {errors.fullName && <p className="text-sm text-red-500">{errors.fullName}</p>}
-        </LabelInputContainer>
-        <LabelInputContainer className="mb-4">
-          <Label htmlFor="email">Email Address</Label>
-          <Input
-            id="email"
-            placeholder="you@example.com"
+        </div>
+
+        {/* EMAIL ADDRESS */}
+        <div className="space-y-2">
+          <label
+            htmlFor="contact-email"
+            className="text-sm font-semibold"
+          >
+            Email Address
+          </label>
+
+          <input
+            id="contact-email"
             type="email"
-            value={email}
-            onChange={(e) => { setEmail(e.target.value); setErrors((p) => ({ ...p, email: undefined })); }}
+            name="email"
+            autoComplete="email"
+            placeholder="you@example.com"
+            value={form.email}
+            onChange={(event) =>
+              updateField(
+                "email",
+                event.target.value
+              )
+            }
+            maxLength={254}
+            required
+            disabled={status === "loading"}
+            className={inputClassName}
           />
-          {errors.email && <p className="text-sm text-red-500">{errors.email}</p>}
-        </LabelInputContainer>
+        </div>
       </div>
-      <div className="grid w-full gap-1.5 mb-4">
-        <Label htmlFor="content">Your Message</Label>
-        <Textarea
-          placeholder="Tell me about about your project,"
-          id="content"
-          value={message}
-          onChange={(e) => { setMessage(e.target.value); setErrors((p) => ({ ...p, message: undefined })); }}
+
+      {/* ================================= */}
+      {/* MESSAGE                           */}
+      {/* ================================= */}
+
+      <div className="space-y-2">
+        <label
+          htmlFor="contact-message"
+          className="text-sm font-semibold"
+        >
+          Your Message
+        </label>
+
+        <textarea
+          id="contact-message"
+          name="message"
+          rows={6}
+          placeholder="Tell me about your project, collaboration, or opportunity..."
+          value={form.message}
+          onChange={(event) =>
+            updateField(
+              "message",
+              event.target.value
+            )
+          }
+          minLength={10}
+          maxLength={5000}
+          required
+          disabled={status === "loading"}
+          className={`${inputClassName} resize-y`}
         />
-        {errors.message && <p className="text-sm text-red-500">{errors.message}</p>}
-        <p className="text-sm text-muted-foreground">
-          I&apos;ll never share your data with anyone else. Pinky promise!
-        </p>
       </div>
-      <Button
-        disabled={loading}
-        className="bg-gradient-to-br relative group/btn from-black dark:from-zinc-900 dark:to-zinc-900 to-neutral-600 block dark:bg-zinc-800 w-full text-white rounded-md h-10 font-medium shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset]"
-        type="submit"
+
+      {/* ================================= */}
+      {/* HONEYPOT FIELD                     */}
+      {/* ================================= */}
+
+      <div
+        className="absolute -left-[9999px]"
+        aria-hidden="true"
       >
-        {loading ? (
-          <div className="flex items-center justify-center">
-            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-            <p>Please wait</p>
-          </div>
+        <label htmlFor="contact-website">
+          Leave this field empty
+        </label>
+
+        <input
+          id="contact-website"
+          name="website"
+          type="text"
+          tabIndex={-1}
+          autoComplete="off"
+          value={form.website}
+          onChange={(event) =>
+            updateField(
+              "website",
+              event.target.value
+            )
+          }
+        />
+      </div>
+
+      {/* PRIVACY INFORMATION */}
+      <p className="text-xs leading-relaxed text-muted-foreground">
+        Your contact information will only be used
+        to respond to your message.
+      </p>
+
+      {/* ================================= */}
+      {/* SUCCESS / ERROR FEEDBACK          */}
+      {/* ================================= */}
+
+      {feedback && (
+        <div
+          role={
+            status === "error"
+              ? "alert"
+              : "status"
+          }
+          aria-live="polite"
+          className={`
+            flex items-start gap-3
+            rounded-lg border p-3 text-sm
+            ${
+              status === "success"
+                ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-500"
+                : "border-red-500/30 bg-red-500/10 text-red-500"
+            }
+          `}
+        >
+          {status === "success" ? (
+            <CheckCircle2
+              size={18}
+              className="shrink-0"
+            />
+          ) : (
+            <AlertCircle
+              size={18}
+              className="shrink-0"
+            />
+          )}
+
+          <span>{feedback}</span>
+        </div>
+      )}
+
+      {/* ================================= */}
+      {/* SEND MESSAGE BUTTON               */}
+      {/* ================================= */}
+
+      <button
+        type="submit"
+        disabled={status === "loading"}
+        className="
+          flex w-full items-center
+          justify-center gap-3
+          rounded-lg border border-border/60
+          bg-zinc-100 px-6 py-3.5
+          font-semibold text-zinc-900
+          transition-all duration-200
+          hover:bg-zinc-200
+          focus-visible:outline-none
+          focus-visible:ring-2
+          focus-visible:ring-primary
+          disabled:cursor-not-allowed
+          disabled:opacity-60
+          dark:bg-zinc-900
+          dark:text-white
+          dark:hover:bg-zinc-800
+        "
+      >
+        {status === "loading" ? (
+          <>
+            <Loader2
+              size={18}
+              className="animate-spin"
+            />
+
+            Sending Message...
+          </>
         ) : (
-          <div className="flex items-center justify-center">
-            Send Message <ChevronRight className="w-4 h-4 ml-4" />
-          </div>
+          <>
+            Send Message
+            <ArrowRight size={18} />
+          </>
         )}
-        <BottomGradient />
-      </Button>
+      </button>
     </form>
   );
-};
-
-export default ContactForm;
-
-const LabelInputContainer = ({
-  children,
-  className,
-}: {
-  children: React.ReactNode;
-  className?: string;
-}) => {
-  return (
-    <div className={cn("flex flex-col space-y-2 w-full", className)}>
-      {children}
-    </div>
-  );
-};
-
-const BottomGradient = () => {
-  return (
-    <>
-      <span className="group-hover/btn:opacity-100 block transition duration-500 opacity-0 absolute h-px w-full -bottom-px inset-x-0 bg-gradient-to-r from-transparent via-brand to-transparent" />
-      <span className="group-hover/btn:opacity-100 blur-sm block transition duration-500 opacity-0 absolute h-px w-1/2 mx-auto -bottom-px inset-x-10 bg-gradient-to-r from-transparent orange-400 to-transparent" />
-    </>
-  );
-};
+}

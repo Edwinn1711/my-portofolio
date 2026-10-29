@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" role="img" aria-label="Illustrative cover: AEGIS-X">
+<defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#06101e"/><stop offset=".55" stop-color="#0f766e" stop-opacity=".27"/><stop offset="1" stop-color="#080f24"/></linearGradient><radialGradient id="glow"><stop stop-color="#22d3ee" stop-opacity=".20"/><stop offset="1" stop-color="#22d3ee" stop-opacity="0"/></radialGradient></defs>
+<rect width="1200" height="675" fill="url(#bg)"/><rect width="1200" height="675" fill="url(#glow)"/>
+<g stroke="#64748b" stroke-width="1" stroke-opacity=".12"><path d="M 40 0 V 675" /><path d="M 100 0 V 675" /><path d="M 160 0 V 675" /><path d="M 220 0 V 675" /><path d="M 280 0 V 675" /><path d="M 340 0 V 675" /><path d="M 400 0 V 675" /><path d="M 460 0 V 675" /><path d="M 520 0 V 675" /><path d="M 580 0 V 675" /><path d="M 640 0 V 675" /><path d="M 700 0 V 675" /><path d="M 760 0 V 675" /><path d="M 820 0 V 675" /><path d="M 880 0 V 675" /><path d="M 940 0 V 675" /><path d="M 1000 0 V 675" /><path d="M 1060 0 V 675" /><path d="M 1120 0 V 675" /><path d="M 1180 0 V 675" /><path d="M 0 30 H 1200" /><path d="M 0 90 H 1200" /><path d="M 0 150 H 1200" /><path d="M 0 210 H 1200" /><path d="M 0 270 H 1200" /><path d="M 0 330 H 1200" /><path d="M 0 390 H 1200" /><path d="M 0 450 H 1200" /><path d="M 0 510 H 1200" /><path d="M 0 570 H 1200" /><path d="M 0 630 H 1200" /></g>
+<rect x="53" y="55" width="166" height="38" rx="19" fill="#0f766e" fill-opacity=".25" stroke="#22d3ee" stroke-opacity=".55"/>
+<text x="136" y="79" font-family="Arial,sans-serif" font-size="17" font-weight="700" fill="#e0f2fe" text-anchor="middle">DEVIN / PROJECT</text>
+<text x="57" y="239" font-family="Arial,sans-serif" font-size="67" font-weight="800" fill="#f8fafc" letter-spacing="-2">AEGIS-X</text>
+<text x="59" y="294" font-family="Arial,sans-serif" font-size="26" fill="#93c5fd">Security Operations &amp; Threat Intelligence</text>
+<line x1="58" x2="535" y1="357" y2="357" stroke="#22d3ee" stroke-width="3" stroke-opacity=".55"/>
+<text x="58" y="547" font-family="Arial,sans-serif" font-size="21" letter-spacing="4" fill="#94a3b8">CYBERSECURITY ENGINEERING</text>
+<text x="58" y="585" font-family="Arial,sans-serif" font-size="15" fill="#64748b">VISUAL CONCEPT COVER — NOT AN APPLICATION SCREENSHOT</text>
+<g fill="none" stroke-width="3">
+         <circle cx="914" cy="305" r="162" stroke="#22d3ee" opacity=".40" />
+         <circle cx="914" cy="305" r="111" stroke="#818cf8" opacity=".6"/>
+         <circle cx="914" cy="305" r="65" stroke="#22d3ee" opacity=".6"/>
+         <path d="M 752 305 H 1076 M 914 143 V 467 M 788 190 L 1040 420 M 794 420 L 1032 190" stroke="#94a3b8" opacity=".25"/>
+         <path d="M 914 305 L 1007 215 L 1048 269" stroke="#4ade80" stroke-width="6"/>
+        </g><g fill="#22d3ee"><circle cx="1007" cy="215" r="14"/><circle cx="1048" cy="269" r="12"/></g><circle cx="914" cy="305" r="18" fill="#a78bfa"/>
+        <rect x="810" y="502" width="225" height="42" rx="14" fill="#122840" stroke="#22d3ee" stroke-opacity=".6"/><text x="922" y="529" font-size="18" text-anchor="middle" font-family="Arial,sans-serif" fill="#a5f3fc">THREAT CORRELATION</text></svg>

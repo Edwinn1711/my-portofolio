@@ -1,4 +1,5 @@
-// thoda zada ts ho gya idhar
+// Devin Siahaan — portfolio skills & experience
+// Legacy SkillNames are preserved to avoid breaking references in other files.
 export enum SkillNames {
   JS = "js",
   TS = "ts",
@@ -24,7 +25,23 @@ export enum SkillNames {
   AWS = "aws",
   GCP = "gcp",
   VIM = "vim",
+
+  // Technologies relevant to Devin's profile
+  GO = "go",
+  LARAVEL = "laravel",
+  MARIADB = "mariadb",
+  POSTMAN = "postman",
+  PYTHON = "python",
+  PHP = "php",
+  FLUTTER = "flutter",
+  DART = "dart",
+  MYSQL = "mysql",
+  FIGMA = "figma",
+  C = "c",
+  FRAMER_MOTION = "framer-motion",
+  UBUNTU = "ubuntu",
 }
+
 export type Skill = {
   id: number;
   name: string;
@@ -32,262 +49,114 @@ export type Skill = {
   shortDescription: string;
   color: string;
   icon: string;
-  /** Optional local artwork for the 3D key; falls back to icon. */
   keyboardIcon?: string;
-  /** Plastic color of the 3D keycap; independent of the HTML brand accent. */
   keyboardColor?: string;
-  /** Browser KeyboardEvent.code, e.g. KeyJ. Defaults to the displayed key order. */
   shortcut?: string;
+  /** Set false for leftover template skills not intended for Devin's skills grid. */
+  featured?: boolean;
 };
+
+const devicon = (path: string) =>
+  `https://cdn.jsdelivr.net/gh/devicons/devicon/icons/${path}.svg`;
+
+const createSkill = (
+  id: number,
+  name: SkillNames,
+  label: string,
+  shortDescription: string,
+  color: string,
+  iconPath: string,
+  options: Pick<Skill, "keyboardIcon" | "keyboardColor" | "featured"> = {}
+): Skill => ({
+  id,
+  name,
+  label,
+  shortDescription,
+  color,
+  icon: devicon(iconPath),
+  keyboardColor: options.keyboardColor ?? color,
+  ...options,
+});
+
 export const SKILLS: Record<SkillNames, Skill> = {
-  [SkillNames.JS]: {
-    id: 1,
-    name: "js",
-    label: "JavaScript",
-    shortDescription: "yeeting code into the DOM since '95, no cap! 💯🚀",
-    color: "#f0db4f",
-    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg",
-    keyboardIcon: "/assets/keyboard/logos/js.svg",
-    keyboardColor: "#ff9408",
-  },
-  [SkillNames.TS]: {
-    id: 2,
-    name: "ts",
-    label: "TypeScript",
-    shortDescription:
-      "JavaScript's overachieving cousin who's always flexing 💯🔒",
-    color: "#007acc",
-    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg",
-    keyboardIcon: "/assets/keyboard/logos/ts.svg",
-    keyboardColor: "#008fd5",
-  },
-  [SkillNames.HTML]: {
-    id: 3,
-    name: "html",
-    label: "HTML",
-    shortDescription: "the internet's granddad,  still bussin' fr fr! 💀🔥",
-    color: "#e34c26",
-    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg",
-    keyboardIcon: "/assets/keyboard/logos/html.svg",
-    keyboardColor: "#ff480a",
-  },
-  [SkillNames.CSS]: {
-    id: 4,
-    name: "css",
-    label: "CSS",
-    shortDescription: "styling with the ultimate drip, no cap 💁‍♂️🔥",
-    color: "#563d7c",
-    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg",
-    keyboardIcon: "/assets/keyboard/logos/css.svg",
-    keyboardColor: "#633595",
-  },
-  [SkillNames.REACT]: {
-    id: 5,
-    name: "react",
-    label: "React",
-    shortDescription: `"use using" 
-using use = useUsing("use")`,
-    color: "#61dafb",
-    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg",
-    keyboardIcon: "/assets/keyboard/logos/react.svg",
-    keyboardColor: "#00cce8",
-  },
-  [SkillNames.VUE]: {
-    id: 6,
-    name: "vue",
-    label: "Vue",
-    shortDescription:
-      "the chill pill for your frontend, it hits different! 🟢😌",
-    color: "#41b883",
-    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vuejs/vuejs-original.svg",
-    keyboardIcon: "/assets/keyboard/logos/vue.svg",
-    keyboardColor: "#00b880",
-  },
-  [SkillNames.NEXTJS]: {
-    id: 7,
-    name: "nextjs",
-    label: "Next.js",
-    shortDescription:
-      "the drama queen of front-end frameworks, and we stan! 👑📜",
-    color: "#fff",
-    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg",
-    keyboardIcon: "/assets/keyboard/logos/nextjs.svg",
-    keyboardColor: "#333537",
-  },
-  [SkillNames.TAILWIND]: {
-    id: 8,
-    name: "tailwind",
-    label: "Tailwind",
-    shortDescription: "utility classes hitting different fr fr 🌪️🔥",
-    color: "#38bdf8",
-    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-plain.svg",
-    keyboardIcon: "/assets/keyboard/logos/tailwind.svg",
-    keyboardColor: "#00bfd8",
-  },
-  [SkillNames.NODEJS]: {
-    id: 9,
-    name: "nodejs",
-    label: "Node.js",
-    shortDescription: "JavaScript said 'sike, I'm backend now', deadass! 🔙🔚",
-    color: "#6cc24a",
-    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg",
-    keyboardIcon: "/assets/keyboard/logos/nodejs.svg",
-    keyboardColor: "#00952c",
-  },
-  [SkillNames.EXPRESS]: {
-    id: 10,
-    name: "express",
-    label: "Express",
-    shortDescription: "middlewares go dummy hard, no cap! 🚂💨",
-    color: "#fff",
-    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/express/express-original.svg",
-    keyboardIcon: "/assets/keyboard/logos/express.svg",
-    keyboardColor: "#343638",
-  },
-  [SkillNames.POSTGRES]: {
-    id: 11,
-    name: "postgres",
-    label: "PostgreSQL",
-    shortDescription: "SQL but make it fashion, purr 💅🐘",
-    color: "#336791",
-    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg",
-    keyboardIcon: "/assets/keyboard/logos/postgres.svg",
-    keyboardColor: "#146888",
-  },
-  [SkillNames.MONGODB]: {
-    id: 12,
-    name: "mongodb",
-    label: "MongoDB",
-    shortDescription: "flexin' with that NoSQL drip, respectfully! 💪🍃",
-    color: "#336791",
-    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg",
-    keyboardIcon: "/assets/keyboard/logos/mongodb.svg",
-    keyboardColor: "#00c51b",
-  },
-  [SkillNames.GIT]: {
-    id: 13,
-    name: "git",
-    label: "Git",
-    shortDescription: "the code's personal bodyguard, no cap! 🕵️‍♂️🔄",
-    color: "#f1502f",
-    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg",
-    keyboardIcon: "/assets/keyboard/logos/git.svg",
-    keyboardColor: "#ff4622",
-  },
-  [SkillNames.GITHUB]: {
-    id: 14,
-    name: "github",
-    label: "GitHub",
-    shortDescription: "sliding into those pull requests, IYKYK! 🐙",
-    color: "#000000",
-    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg",
-    keyboardIcon: "/assets/keyboard/logos/github.svg",
-    keyboardColor: "#343638",
-  },
-  [SkillNames.PRETTIER]: {
-    id: 15,
-    name: "prettier",
-    label: "Prettier",
-    shortDescription: "making your code not a whole mess, thank u next 🧹✨",
-    color: "#f7b93a",
-    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/prettier/prettier-original.svg",
-    keyboardIcon: "/assets/keyboard/logos/prettier.svg",
-    keyboardColor: "#18333e",
-  },
-  [SkillNames.NPM]: {
-    id: 16,
-    name: "npm",
-    label: "NPM",
-    shortDescription: "package manager said 'I gotchu fam', period! 📦💯",
-    color: "#fff",
-    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/npm/npm-original-wordmark.svg",
-    keyboardIcon: "/assets/keyboard/logos/npm.svg",
-    keyboardColor: "#f50032",
-  },
-  [SkillNames.FIREBASE]: {
-    id: 17,
-    name: "firebase",
-    label: "Firebase",
-    shortDescription:
-      "your app's ultimate wingman, but watch out, vendor lock-in vibes! 🔥👌",
-    color: "#ffca28",
-    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/firebase/firebase-plain.svg",
-    keyboardIcon: "/assets/keyboard/logos/firebase.svg",
-    keyboardColor: "#efbe00",
-  },
-  [SkillNames.WORDPRESS]: {
-    id: 18,
-    name: "wordpress",
-    label: "WordPress",
-    shortDescription: "the grandpa of CMS, still rocking that cane 🧓👴",
-    color: "#007acc",
-    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/wordpress/wordpress-plain.svg",
-    keyboardIcon: "/assets/keyboard/logos/wordpress.svg",
-    keyboardColor: "#007d9f",
-  },
-  [SkillNames.LINUX]: {
-    id: 19,
-    name: "linux",
-    label: "Linux",
-    shortDescription: "where 'chmod 777' is the ultimate flex 🔓🙌",
-    color: "#fff",
-    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linux/linux-original.svg",
-    keyboardIcon: "/assets/keyboard/logos/linux.svg",
-    keyboardColor: "#333537",
-  },
-  [SkillNames.DOCKER]: {
-    id: 20,
-    name: "docker",
-    label: "Docker",
-    shortDescription: "The best containerization! 🐳🔥",
-    color: "#2496ed",
-    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg",
-    keyboardIcon: "/assets/keyboard/logos/docker.svg",
-    keyboardColor: "#009fe8",
-  },
-  [SkillNames.NGINX]: {
-    id: 21,
-    name: "nginx",
-    label: "NginX",
-    shortDescription: "reverse proxy go zoom zoom, sheesh! 🚗💨",
-    color: "#008000",
-    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nginx/nginx-original.svg",
-    keyboardIcon: "/assets/keyboard/logos/nginx.svg",
-    keyboardColor: "#00a20b",
-  },
-  [SkillNames.AWS]: {
-    id: 22,
-    name: "aws",
-    label: "AWS",
-    shortDescription:
-      "always extra, making everything more complicated, period! 🌐👨‍💻",
-    color: "#ff9900",
-    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/aws/aws-original.svg",
-    keyboardIcon: "/assets/keyboard/logos/aws.svg",
-    keyboardColor: "#ff9208",
-  },
-  [SkillNames.GCP]: {
-    id: 25,
-    name: "gcp",
-    label: "Google Cloud",
-    shortDescription:
-      "cloud computing but make it Google vibes, living rent free! ☁️🔥",
-    color: "#4285f4",
-    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/googlecloud/googlecloud-original.svg",
-    keyboardIcon: "/assets/keyboard/logos/gcp.svg",
-    keyboardColor: "#008fd5",
-  },
-  [SkillNames.VIM]: {
-    id: 23,
-    name: "vim",
-    label: "Vim",
-    shortDescription: "exit? In this economy? Ight, imma head out! 🚪🏃",
-    color: "#e34c26",
-    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vim/vim-original.svg",
-    keyboardIcon: "/assets/keyboard/logos/vim.svg",
-    keyboardColor: "#009f18",
-  },
+  // Existing 3D keycap slots — keep these keys for compatibility.
+  [SkillNames.JS]: createSkill(1, SkillNames.JS, "JavaScript", "Building interactive interfaces and client-side application logic.", "#F0DB4F", "javascript/javascript-original", { keyboardIcon: "/assets/keyboard/logos/js.svg", keyboardColor: "#FF9408" }),
+  [SkillNames.TS]: createSkill(2, SkillNames.TS, "TypeScript", "Adding static types to make JavaScript applications easier to maintain.", "#3178C6", "typescript/typescript-original", { keyboardIcon: "/assets/keyboard/logos/ts.svg", keyboardColor: "#008FD5" }),
+  [SkillNames.HTML]: createSkill(3, SkillNames.HTML, "HTML", "Structuring accessible and semantic web pages.", "#E34C26", "html5/html5-original", { keyboardIcon: "/assets/keyboard/logos/html.svg", keyboardColor: "#FF480A" }),
+  [SkillNames.CSS]: createSkill(4, SkillNames.CSS, "CSS", "Creating responsive, clear, and visually engaging web layouts.", "#1572B6", "css3/css3-original", { keyboardIcon: "/assets/keyboard/logos/css.svg", keyboardColor: "#633595" }),
+  [SkillNames.REACT]: createSkill(5, SkillNames.REACT, "React", "Developing component-based user interfaces for web applications.", "#61DAFB", "react/react-original", { keyboardIcon: "/assets/keyboard/logos/react.svg", keyboardColor: "#00CCE8" }),
+  [SkillNames.VUE]: createSkill(6, SkillNames.VUE, "Vue", "A progressive framework for user interfaces. Kept for legacy 3D keycap compatibility.", "#41B883", "vuejs/vuejs-original", { keyboardIcon: "/assets/keyboard/logos/vue.svg", keyboardColor: "#00B880", featured: false }),
+  [SkillNames.NEXTJS]: createSkill(7, SkillNames.NEXTJS, "Next.js", "Building modern React applications with routing and server rendering.", "#E5E7EB", "nextjs/nextjs-original", { keyboardIcon: "/assets/keyboard/logos/nextjs.svg", keyboardColor: "#333537" }),
+  [SkillNames.TAILWIND]: createSkill(8, SkillNames.TAILWIND, "Tailwind CSS", "Designing responsive interfaces with utility-first CSS.", "#38BDF8", "tailwindcss/tailwindcss-original", { keyboardIcon: "/assets/keyboard/logos/tailwind.svg", keyboardColor: "#00BFD8" }),
+  [SkillNames.NODEJS]: createSkill(9, SkillNames.NODEJS, "Node.js", "A JavaScript runtime used to build server-side applications.", "#6CC24A", "nodejs/nodejs-original", { keyboardIcon: "/assets/keyboard/logos/nodejs.svg", keyboardColor: "#00952C", featured: false }),
+  [SkillNames.EXPRESS]: createSkill(10, SkillNames.EXPRESS, "Express", "A minimal framework for building Node.js web APIs.", "#E5E7EB", "express/express-original", { keyboardIcon: "/assets/keyboard/logos/express.svg", keyboardColor: "#343638", featured: false }),
+  [SkillNames.POSTGRES]: createSkill(11, SkillNames.POSTGRES, "PostgreSQL", "Managing relational data and writing SQL queries.", "#336791", "postgresql/postgresql-original", { keyboardIcon: "/assets/keyboard/logos/postgres.svg", keyboardColor: "#146888" }),
+  [SkillNames.MONGODB]: createSkill(12, SkillNames.MONGODB, "MongoDB", "Working with document-oriented data for backend applications.", "#47A248", "mongodb/mongodb-original", { keyboardIcon: "/assets/keyboard/logos/mongodb.svg", keyboardColor: "#00C51B" }),
+  [SkillNames.GIT]: createSkill(13, SkillNames.GIT, "Git", "Tracking code changes and collaborating through version control.", "#F1502F", "git/git-original", { keyboardIcon: "/assets/keyboard/logos/git.svg", keyboardColor: "#FF4622" }),
+  [SkillNames.GITHUB]: createSkill(14, SkillNames.GITHUB, "GitHub", "Managing repositories, branches, code reviews, and collaboration.", "#E5E7EB", "github/github-original", { keyboardIcon: "/assets/keyboard/logos/github.svg", keyboardColor: "#343638" }),
+  [SkillNames.PRETTIER]: createSkill(15, SkillNames.PRETTIER, "Prettier", "Automatically formatting code to maintain a consistent style.", "#F7B93A", "prettier/prettier-original", { keyboardIcon: "/assets/keyboard/logos/prettier.svg", keyboardColor: "#18333E", featured: false }),
+  [SkillNames.NPM]: createSkill(16, SkillNames.NPM, "npm", "Managing packages and scripts in JavaScript projects.", "#CB3837", "npm/npm-original-wordmark", { keyboardIcon: "/assets/keyboard/logos/npm.svg", keyboardColor: "#F50032", featured: false }),
+  [SkillNames.FIREBASE]: createSkill(17, SkillNames.FIREBASE, "Firebase", "Exploring backend services and application data integration.", "#FFCA28", "firebase/firebase-original", { keyboardIcon: "/assets/keyboard/logos/firebase.svg", keyboardColor: "#EFBE00" }),
+  [SkillNames.WORDPRESS]: createSkill(18, SkillNames.WORDPRESS, "WordPress", "A content management system for building and maintaining websites.", "#21759B", "wordpress/wordpress-original", { keyboardIcon: "/assets/keyboard/logos/wordpress.svg", keyboardColor: "#007D9F" }),
+  [SkillNames.UBUNTU]: createSkill(38, SkillNames.UBUNTU, "Ubuntu", "Working with Ubuntu Linux, terminal commands, package management, and development environments.", "#E95420", "ubuntu/ubuntu-plain", { keyboardIcon: "/assets/keyboard/logos/ubuntu.svg", keyboardColor: "#C24621" }),
+  [SkillNames.LINUX]: createSkill(19, SkillNames.LINUX, "Linux", "Exploring command-line workflows, development environments, and system fundamentals.", "#E5E7EB", "linux/linux-original", { keyboardIcon: "/assets/keyboard/logos/linux.svg", keyboardColor: "#333537" }),
+  [SkillNames.DOCKER]: createSkill(20, SkillNames.DOCKER, "Docker", "Packaging applications into consistent development and deployment environments.", "#2496ED", "docker/docker-original", { keyboardIcon: "/assets/keyboard/logos/docker.svg", keyboardColor: "#009FE8" }),
+  [SkillNames.NGINX]: createSkill(21, SkillNames.NGINX, "Nginx", "A web server and reverse proxy used in application deployment.", "#009639", "nginx/nginx-original", { keyboardIcon: "/assets/keyboard/logos/nginx.svg", keyboardColor: "#00A20B", featured: false }),
+  [SkillNames.AWS]: createSkill(22, SkillNames.AWS, "AWS", "Cloud services and infrastructure fundamentals.", "#FF9900", "amazonwebservices/amazonwebservices-original-wordmark", { keyboardIcon: "/assets/keyboard/logos/aws.svg", keyboardColor: "#FF9208", featured: false }),
+  [SkillNames.GCP]: createSkill(25, SkillNames.GCP, "Google Cloud", "Google Cloud infrastructure and deployment services.", "#4285F4", "googlecloud/googlecloud-original", { keyboardIcon: "/assets/keyboard/logos/gcp.svg", keyboardColor: "#008FD5", featured: false }),
+  [SkillNames.VIM]: createSkill(23, SkillNames.VIM, "Vim", "A keyboard-driven text editor for development workflows.", "#019733", "vim/vim-original", { keyboardIcon: "/assets/keyboard/logos/vim.svg", keyboardColor: "#009F18", featured: false }),
+
+  // Additional technologies with local keycap artwork (included in ZIP).
+  [SkillNames.GO]: createSkill(26, SkillNames.GO, "Go", "Developing backend services and REST APIs using Go.", "#00ADD8", "go/go-original", { keyboardIcon: "/assets/keyboard/logos/go.svg" }),
+  [SkillNames.LARAVEL]: createSkill(27, SkillNames.LARAVEL, "Laravel", "Building PHP-based web applications with authentication, APIs, and database integration.", "#FF2D20", "laravel/laravel-original", { keyboardIcon: "/assets/keyboard/logos/laravel.svg" }),
+  [SkillNames.MARIADB]: createSkill(28, SkillNames.MARIADB, "MariaDB", "Working with relational databases and structured SQL data.", "#C49A6C", "mariadb/mariadb-original", { keyboardIcon: "/assets/keyboard/logos/mariadb.svg" }),
+  [SkillNames.POSTMAN]: createSkill(29, SkillNames.POSTMAN, "Postman", "Testing, documenting, and validating REST API requests and responses.", "#FF6C37", "postman/postman-original", { keyboardIcon: "/assets/keyboard/logos/postman.svg" }),
+  [SkillNames.PYTHON]: createSkill(30, SkillNames.PYTHON, "Python", "Writing scripts and exploring data analysis and automation.", "#3776AB", "python/python-original", { keyboardIcon: "/assets/keyboard/logos/python.svg" }),
+  [SkillNames.PHP]: createSkill(31, SkillNames.PHP, "PHP", "Developing server-side web features and backend application logic.", "#777BB4", "php/php-original", { keyboardIcon: "/assets/keyboard/logos/php.svg" }),
+  [SkillNames.FLUTTER]: createSkill(32, SkillNames.FLUTTER, "Flutter", "Building cross-platform mobile interfaces and applications.", "#02569B", "flutter/flutter-original", { keyboardIcon: "/assets/keyboard/logos/flutter.svg" }),
+  [SkillNames.DART]: createSkill(33, SkillNames.DART, "Dart", "Programming mobile application features with Flutter.", "#0175C2", "dart/dart-original", { keyboardIcon: "/assets/keyboard/logos/dart.svg" }),
+  [SkillNames.MYSQL]: createSkill(34, SkillNames.MYSQL, "MySQL", "Designing and querying relational data for web applications.", "#4479A1", "mysql/mysql-original", { keyboardIcon: "/assets/keyboard/logos/mysql.svg" }),
+  [SkillNames.FIGMA]: createSkill(35, SkillNames.FIGMA, "Figma", "Prototyping and designing intuitive user interfaces.", "#F24E1E", "figma/figma-original", { keyboardIcon: "/assets/keyboard/logos/figma.svg" }),
+  [SkillNames.C]: createSkill(36, SkillNames.C, "C", "Learning programming fundamentals and low-level problem-solving.", "#A8B9CC", "c/c-original", { keyboardIcon: "/assets/keyboard/logos/c.svg" }),
+  [SkillNames.FRAMER_MOTION]: createSkill(37, SkillNames.FRAMER_MOTION, "Motion", "Creating polished interactive animations in React applications.", "#C99CFF", "framermotion/framermotion-original"),
 };
+
+/**
+ * 24 featured skills (6 columns x 4 rows).
+ * Keep this order aligned between the 3D keyboard and accessible skills grid.
+ */
+export const KEYBOARD_SKILL_ORDER: SkillNames[] = [
+  SkillNames.GO,
+  SkillNames.LARAVEL,
+  SkillNames.PHP,
+  SkillNames.PYTHON,
+  SkillNames.MYSQL,
+  SkillNames.MARIADB,
+  SkillNames.JS,
+  SkillNames.TS,
+  SkillNames.REACT,
+  SkillNames.NEXTJS,
+  SkillNames.HTML,
+  SkillNames.CSS,
+  SkillNames.TAILWIND,
+  SkillNames.POSTGRES,
+  SkillNames.MONGODB,
+  SkillNames.WORDPRESS,
+  SkillNames.FLUTTER,
+  SkillNames.DART,
+  SkillNames.UBUNTU,
+  SkillNames.DOCKER,
+  SkillNames.GIT,
+  SkillNames.GITHUB,
+  SkillNames.POSTMAN,
+  SkillNames.FIGMA,
+];
+
+// Maintain compatibility with existing components that filter on `featured`.
+const visibleKeyboardSkills = new Set<SkillNames>(KEYBOARD_SKILL_ORDER);
+for (const name of Object.values(SkillNames)) {
+  SKILLS[name].featured = visibleKeyboardSkills.has(name);
+}
 
 export type Experience = {
   id: number;
@@ -299,68 +168,111 @@ export type Experience = {
   skills: SkillNames[];
 };
 
+// Devin Siahaan's project and development experience.
+// Each entry describes information supplied in the CV and chat.
+// The end date of the Laravel CRI project remains unconfirmed.
 export const EXPERIENCE: Experience[] = [
   {
     id: 1,
-    startDate: "Dec 2024",
-    endDate: "Present",
-    title: "Full Stack Developer",
-    company: "OmniNexus Sdn Bhd",
+    startDate: "Jul 2026",
+    endDate: "Date to confirm",
+    title: "Cybersecurity Readiness Index — Assessment System Enhancement",
+    company: "Cybersecurity Development Project · Institut Teknologi Del",
     description: [
-      "Built a custom image editor from scratch, cutting $4.8k/year in SaaS costs.",
-      "Architected async job queues processing 1k+ AI tasks daily with bulletproof reliability.",
-      "Optimized media delivery pipeline, slashing asset load times by 40%.",
-      "Shipped high-impact features end-to-end from requirements to production.",
+      "Worked on a Cybersecurity Readiness Index system and security-domain determination for student assessments.",
+      "Developed web application features using Laravel, PHP, and MySQL/MariaDB.",
+      "Explored the use of AI within the cybersecurity assessment project.",
+      "Continuation of the Fiscal Year 2026 Funded Research, focusing on system development through the integration of AI features and the addition of new domains.",
     ],
-    skills: [
-      SkillNames.NEXTJS,
-      SkillNames.TS,
-      SkillNames.REACT,
-      SkillNames.NODEJS,
-      SkillNames.POSTGRES,
-      SkillNames.MONGODB,
-      SkillNames.DOCKER,
-      SkillNames.GCP,
+    skills: [SkillNames.LARAVEL, SkillNames.PHP, SkillNames.MYSQL, SkillNames.MARIADB],
+  },
+  {
+    id: 2,
+    startDate: "Jan 2026",
+    endDate: "Jun 2026",
+    title: "Cybersecurity Readiness Index — Student Assessment Platform",
+    company: "Cybersecurity Research Project · Institut Teknologi Del",
+    description: [
+      "Contributed to a web-based Cybersecurity Readiness Index platform for senior high and vocational school students (SMA/SMK).",
+      "Worked with Next.js, MySQL/MariaDB, and Python as part of the technology stack.",
+      "Research Funding for Fiscal Year 2026: Design and Development of a Cybersecurity Readiness Index Information System for Measuring and Improving Cybersecurity among Vocational (SMK) and Senior High School (SMA) Students",
+    ],
+    skills: [SkillNames.NEXTJS, SkillNames.MYSQL, SkillNames.MARIADB, SkillNames.PYTHON],
+  },
+  {
+    id: 3,
+    startDate: "Jan 2025",
+    endDate: "Jun 2025",
+    title: "Toba Batak Culinary — Digital Culinary Platform",
+    company: "Web Development Project · Sitoluama, Balige",
+    description: [
+      "Developed a WordPress-based website for Toba Batak Culinary.",
+      "Developed as an academic website project at Institut Teknologi Del.",
+    ],
+    skills: [SkillNames.WORDPRESS],
+  }
+];
+
+export type OrganizationExperience = {
+  id: number;
+  startDate: string;
+  endDate: string;
+  role: string;
+  organization: string;
+  location: string;
+  description: string[];
+};
+
+// A separate export preserves the existing project Experience components.
+// To show these on the website, render ORGANIZATIONS in an organization section.
+export const ORGANIZATIONS: OrganizationExperience[] = [
+  {
+    id: 1,
+    startDate: "Oct 2024",
+    endDate: "Oct 2025",
+    role: "Division Member",
+    organization: "HIMATEK IT Del",
+    location: "Laguboti, Indonesia",
+    description: [
+      "Participated in the Computer Technology Student Association at Institut Teknologi Del.",
+      "Engaged in student activities supporting academic, professional, and community development.",
     ],
   },
   {
     id: 2,
-    startDate: "Apr 2022",
-    endDate: "Dec 2024",
-    title: "Freelance Full Stack Developer",
-    company: "Self-employed",
+    startDate: "Feb 2026",
+    endDate: "Present",
+    role: "Department Member",
+    organization: "Depol IT Del — Sports Department",
+    location: "Laguboti, Indonesia",
     description: [
-      "Transformed chaotic Excel sheets into polished internal tools for various clients.",
-      "Shipped dashboards and custom CMS platforms tailored to each client's workflow.",
-      "Automated repetitive processes, improving efficiency and reducing human error.",
-      "Focused on clean, maintainable code and interfaces that users actually enjoy.",
+      "Participated in sports-related student activities that foster sportsmanship and teamwork.",
+      "Supported a collaborative and inclusive campus community through the student organization.",
     ],
-    skills: [
-      SkillNames.REACT,
-      SkillNames.VUE,
-      SkillNames.NODEJS,
-      SkillNames.EXPRESS,
-      SkillNames.MONGODB,
-      SkillNames.POSTGRES,
-      SkillNames.TAILWIND,
-      SkillNames.WORDPRESS,
+  },
+  {
+    id: 3,
+    startDate: "Aug 2025",
+    endDate: "Jun 2026",
+    role: "Student Mentor Committee Member",
+    organization: "IT Del Student Leadership Program (Abang/Kakak Asuh)",
+    location: "Laguboti, Indonesia",
+    description: [
+      "Mentored and guided first-year students during their transition to academic and dormitory life.",
+      "Collaborated with dormitory supervisors to promote discipline, safety, and a positive learning environment.",
     ],
   },
 ];
 
 export const themeDisclaimers = {
   light: [
-    "Warning: Light mode emits a gazillion lumens of pure radiance!",
-    "Caution: Light mode ahead! Please don't try this at home.",
-    "Only trained professionals can handle this much brightness. Proceed with sunglasses!",
-    "Brace yourself! Light mode is about to make everything shine brighter than your future.",
-    "Flipping the switch to light mode... Are you sure your eyes are ready for this?",
+    "Light mode enabled.",
+    "A brighter view of the same workspace.",
+    "Interface switched to light mode.",
   ],
   dark: [
-    "Light mode? I thought you went insane... but welcome back to the dark side!",
-    "Switching to dark mode... How was life on the bright side?",
-    "Dark mode activated! Thanks you from the bottom of my heart, and my eyes too.",
-    "Welcome back to the shadows. How was life out there in the light?",
-    "Dark mode on! Finally, someone who understands true sophistication.",
+    "Dark mode enabled.",
+    "Focus mode: on.",
+    "Interface switched to dark mode.",
   ],
 };
