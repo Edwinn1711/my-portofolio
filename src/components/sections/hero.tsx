@@ -119,14 +119,11 @@ const HeroSection = () => {
                 {/* DOWNLOAD CV */}
                 <Link
                   href="/Devin-Siahaan-CV.pdf"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  download="Devin-Siahaan-CV.pdf"
                   className="flex-1"
                 >
                   <BoxReveal delay={2} width="100%">
-                    <Button
-                      className="flex w-full items-center gap-2"
-                    >
+                    <Button className="flex w-full items-center gap-2">
                       <FileText size={24} />
                       <span>Download CV</span>
                     </Button>
