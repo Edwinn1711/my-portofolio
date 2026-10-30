@@ -33,7 +33,7 @@ const config = {
   ],
   author: "Devin Siahaan",
   email: "devinedwinsiahaan171105@gmail.com",
-  site: "http://localhost:3000",
+  site: "hhttps://v0-devinsiahaan.vercel.app",
 
   // for github stars button
   githubUsername: "Edwinn1711",
